@@ -1,54 +1,44 @@
-# Centralized Patient History System
+# OneHistory
 
-A secure, case-centric medical record system where patients control access to their data.
+OneHistory is a consent-aware clinical-records platform. Patients retain control over access to their case-based records, while authorised healthcare providers can review the information required for care.
 
-## Features
-- **Case-Centric Records**: All data (Visits, Labs, Rx) linked to specific medical cases.
-- **Granular Consent**: Patients grant/revoke access to providers.
-- **Audit Trails**: Every access is logged and visible to the patient.
-- **Role-Based Access**: Doctor, Patient, Lab, Pharmacy, Insurance views.
+## Current application
 
-## Tech Stack
-- **Frontend**: React + Vite (Simple, clean UI)
-- **Backend**: Node.js + Express
-- **Database**: SQLite (Local file `server/db/database.sqlite`)
+The deployment target is [`health-records`](./health-records), a Next.js and TypeScript application prepared for Vercel and Supabase.
 
-## Setup & Run
+| Area | Technology |
+| --- | --- |
+| Web application | Next.js, TypeScript, Tailwind CSS |
+| Authentication and data | Supabase Auth and PostgreSQL |
+| File storage | Supabase Storage |
+| Hosting | Vercel |
 
-### 1. Install Dependencies
-(If not already done)
-```bash
-# Server
-cd server
-npm install
+The application currently provides a validated dashboard shell, a production health endpoint at `/api/health`, an environment template, and an initial Supabase migration for users, medical cases, consents, and audit events.
 
-# Client
-cd client
-npm install
+## Run locally
+
+```powershell
+cd health-records
+Copy-Item .env.example .env.local
+npm.cmd install
+npm.cmd run dev
 ```
 
-### 2. Initialize Database
-```bash
-node server/db/initDb.js
-```
+Open `http://localhost:3000`.
 
-### 3. Start Backend
-```bash
-cd server
-npm start
-```
-Runs on Port 3000.
+Before connecting real data, add the Supabase values to `.env.local` and run the migration at `health-records/supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor or through the Supabase CLI.
 
-### 4. Start Frontend
-```bash
-cd client
-npm run dev
-```
-Runs on Port 5173 (usually).
+## Deploy
 
-## Demo Credentials
-| Role | User ID | Password |
-|------|---------|----------|
-| **Patient** | `patient-123` | `password` |
-| **Doctor** | `doctor-123` | `password` |
-| **Lab** | `lab-123` | `password` |
+1. Push the `health-records` directory to the `onehistory` GitHub repository.
+2. Import the repository into Vercel, setting `health-records` as the root directory if the repository includes this workspace structure.
+3. Add the variables from `.env.example` to the Preview and Production environments.
+4. Deploy and verify `https://your-domain/api/health` returns an `ok` response.
+
+## Legacy application
+
+The `client`, `server`, and `db` folders contain the original React/Vite, Express, and SQLite prototype. They are retained as a reference only and are not the deployment target. See [`context.md`](./context.md) for architecture decisions and the current roadmap.
+
+## Data safety
+
+Use synthetic demo data only until authentication, authorisation, audit logging, backups, retention, and applicable healthcare compliance requirements have been independently reviewed. Never commit `.env.local`, credentials, or real patient data.

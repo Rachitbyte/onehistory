@@ -1,0 +1,9 @@
+node_modules/
+*.sqlite
+.env
+.env.local
+/server/uploads/*
+!/server/uploads/.gitkeep
+dist/
+build/
+*.log

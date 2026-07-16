@@ -1,44 +1,54 @@
 # OneHistory
 
-OneHistory is a consent-aware clinical-records platform. Patients retain control over access to their case-based records, while authorised healthcare providers can review the information required for care.
+OneHistory is a local, full-stack medical-history application. It has a React/Vite client and an Express/SQLite API server.
 
-## Current application
+## What it does
 
-The deployment target is [`health-records`](./health-records), a Next.js and TypeScript application prepared for Vercel and Supabase.
+- Authenticates demo users with JWTs.
+- Organizes patient records into cases with clinical visits, lab activity, and prescriptions.
+- Lets patients and providers view and manage appointments.
+- Enforces consent-based access to patient cases and uploaded documents.
+- Supports patient-reported medications and profiles.
+- Records API access in an audit log.
 
-| Area | Technology |
-| --- | --- |
-| Web application | Next.js, TypeScript, Tailwind CSS |
-| Authentication and data | Supabase Auth and PostgreSQL |
-| File storage | Supabase Storage |
-| Hosting | Vercel |
+## Requirements
 
-The application currently provides a validated dashboard shell, a production health endpoint at `/api/health`, an environment template, and an initial Supabase migration for users, medical cases, consents, and audit events.
+- Node.js and npm
 
 ## Run locally
 
+Start the API server first. From the repository root:
+
 ```powershell
-cd health-records
-Copy-Item .env.example .env.local
-npm.cmd install
-npm.cmd run dev
+Set-Location server
+Copy-Item .env.example .env
+# Set JWT_SECRET in .env to a long, unique value before use.
+npm install
+npm run dev
 ```
 
-Open `http://localhost:3000`.
+The API listens on `http://localhost:5001`.
 
-Before connecting real data, add the Supabase values to `.env.local` and run the migration at `health-records/supabase/migrations/001_initial_schema.sql` in the Supabase SQL editor or through the Supabase CLI.
+In a second terminal, start the client:
 
-## Deploy
+```powershell
+Set-Location client
+npm install
+npm run dev
+```
 
-1. Push the `health-records` directory to the `onehistory` GitHub repository.
-2. Import the repository into Vercel, setting `health-records` as the root directory if the repository includes this workspace structure.
-3. Add the variables from `.env.example` to the Preview and Production environments.
-4. Deploy and verify `https://your-domain/api/health` returns an `ok` response.
+Vite serves the client at `http://localhost:5173`. The client is configured to call the API on port `5001`.
 
-## Legacy application
+## Fresh demo database
 
-The `client`, `server`, and `db` folders contain the original React/Vite, Express, and SQLite prototype. They are retained as a reference only and are not the deployment target. See [`context.md`](./context.md) for architecture decisions and the current roadmap.
+The SQLite database is local runtime data and is intentionally not committed. To recreate it with the bundled demo users and an initial case, stop the server and run this from `server`:
 
-## Data safety
+```powershell
+node .\db\initDb.js
+```
 
-Use synthetic demo data only until authentication, authorisation, audit logging, backups, retention, and applicable healthcare compliance requirements have been independently reviewed. Never commit `.env.local`, credentials, or real patient data.
+This command replaces `server/db/database.sqlite`; do not run it against data you need to keep. The seeded user IDs are `patient-123`, `doctor-123`, `lab-123`, `pharmacy-123`, and `insurance-123`; each uses the demo password `password`.
+
+## Runtime data
+
+SQLite files, local environment files, uploaded documents, build output, logs, and dependencies are excluded from version control. `server/uploads/.gitkeep` preserves the upload directory in a fresh checkout; the server also creates it when a document is uploaded.

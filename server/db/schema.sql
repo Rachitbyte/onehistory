@@ -21,15 +21,25 @@ CREATE TABLE IF NOT EXISTS medical_cases (
 -- Appointments
 CREATE TABLE IF NOT EXISTS appointments (
     id TEXT PRIMARY KEY,
-    case_id TEXT, -- Can be linked to a case or generic
-    patient_id TEXT NOT NULL,
     provider_id TEXT NOT NULL,
-    scheduled_time DATETIME NOT NULL,
-    status TEXT DEFAULT 'SCHEDULED' CHECK(status IN ('SCHEDULED', 'COMPLETED', 'CANCELLED')),
+    patient_id TEXT NOT NULL,
+    case_id TEXT,
+    creator_id TEXT NOT NULL,
+    created_by_role TEXT NOT NULL,
+    rescheduled_from_id TEXT,
+    start_time DATETIME NOT NULL,
+    duration_minutes INTEGER NOT NULL,
+    type TEXT NOT NULL,
+    status TEXT NOT NULL,
+    reason_tags TEXT,
+    reason_text TEXT,
+    cancelled_at DATETIME,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(patient_id) REFERENCES users(id),
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(provider_id) REFERENCES users(id),
-    FOREIGN KEY(case_id) REFERENCES medical_cases(id)
+    FOREIGN KEY(patient_id) REFERENCES users(id),
+    FOREIGN KEY(case_id) REFERENCES medical_cases(id),
+    FOREIGN KEY(rescheduled_from_id) REFERENCES appointments(id)
 );
 
 -- Visit Records (Clinical Notes) - Append Only (Amendments linked via parent_id?)
@@ -90,6 +100,9 @@ CREATE TABLE IF NOT EXISTS prescription_medicines (
     prescription_id TEXT NOT NULL,
     medicine_name TEXT NOT NULL,
     dosage TEXT NOT NULL,
+    timing TEXT,
+    duration TEXT,
+    quantity TEXT,
     FOREIGN KEY(prescription_id) REFERENCES prescriptions(id)
 );
 
@@ -171,4 +184,48 @@ CREATE TABLE IF NOT EXISTS patient_reported_medications (
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY(patient_id) REFERENCES users(id)
+);
+
+-- Profiles
+CREATE TABLE IF NOT EXISTS doctor_profiles (
+    user_id TEXT PRIMARY KEY,
+    designation TEXT,
+    specialty TEXT,
+    license_number TEXT,
+    experience_years INTEGER,
+    affiliated_hospital TEXT,
+    consultation_modes TEXT,
+    verification_status TEXT DEFAULT 'PENDING',
+    availability_status TEXT DEFAULT 'AVAILABLE',
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+CREATE TABLE IF NOT EXISTS patient_profiles (
+    user_id TEXT PRIMARY KEY,
+    dob DATE,
+    phone TEXT,
+    email TEXT,
+    address TEXT,
+    emergency_contact_name TEXT,
+    emergency_contact_phone TEXT,
+    blood_group TEXT,
+    allergies TEXT,
+    gender TEXT,
+    medical_conditions TEXT,
+    FOREIGN KEY(user_id) REFERENCES users(id)
+);
+
+-- Uploaded case documents
+CREATE TABLE IF NOT EXISTS case_documents (
+    id TEXT PRIMARY KEY,
+    case_id TEXT NOT NULL,
+    uploader_id TEXT NOT NULL,
+    file_path TEXT NOT NULL,
+    original_name TEXT NOT NULL,
+    file_type TEXT NOT NULL,
+    title TEXT,
+    notes TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(case_id) REFERENCES medical_cases(id),
+    FOREIGN KEY(uploader_id) REFERENCES users(id)
 );

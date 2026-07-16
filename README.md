@@ -29,6 +29,15 @@ npm run dev
 
 The API listens on `http://localhost:5001`.
 
+Log in with a seeded demo user:
+
+```bash
+curl -X POST http://localhost:5001/auth/login -H "Content-Type: application/json" \
+  -d '{"id":"patient-123","password":"password"}'
+```
+
+This is a demo-only authentication flow: it compares plaintext passwords without hashing and is not representative of production security practice.
+
 In a second terminal, start the client:
 
 ```powershell

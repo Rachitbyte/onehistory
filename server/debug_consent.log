@@ -1,0 +1,4 @@
+2026-01-24T13:24:34.148Z: Checking context for cId: 660ec8d2-e22a-49a5-9884-901240256f1b. Params: {"caseId":"660ec8d2-e22a-49a5-9884-901240256f1b"}
+2026-01-24T13:24:34.152Z: Row found: {"patient_id":"patient-123","creator_id":"doctor-123"}
+2026-01-24T13:24:34.154Z: User: doctor-123 (DOCTOR) vs Target: patient-123, Creator: doctor-123
+2026-01-24T13:24:34.155Z: ALLOW: Creator

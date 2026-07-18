@@ -13,80 +13,34 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="glass-panel" style={{
-            position: 'sticky',
-            top: 0,
-            zIndex: 50,
-            padding: '0.5rem 0'
-        }}>
-            <div className="container" style={{ padding: '0 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <Link to={user ? "/dashboard" : "/login"} className="flex items-center gap-3" style={{ textDecoration: 'none' }}>
-                    <div style={{
-                        width: '36px', height: '36px',
-                        background: 'linear-gradient(135deg, var(--primary), var(--accent))',
-                        borderRadius: '10px',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        color: 'white',
-                        boxShadow: 'var(--shadow-glow)'
-                    }}>
+        <nav className="sticky top-0 z-50 border-b border-slate-200 bg-white">
+            <div className="container flex items-center justify-between" style={{ padding: '0.75rem 2rem' }}>
+                <Link to={user ? "/dashboard" : "/login"} className="flex items-center gap-3 no-underline">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-emerald-600 text-white">
                         <Activity size={20} />
                     </div>
-                    <span style={{
-                        fontSize: '1.25rem',
-                        fontWeight: 700,
-                        fontFamily: 'var(--font-heading)',
-                        color: 'var(--text-main)',
-                        letterSpacing: '-0.02em'
-                    }}>
-                        OneHistory
-                    </span>
+                    <span className="text-xl font-semibold text-slate-900">OneHistory</span>
                 </Link>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                     <Link to="/about" className="nav-btn-about">
                         About
                     </Link>
 
                     {user ? (
                         <div className="flex items-center gap-3">
-                            <Link to="/profile" className="flex items-center gap-2" style={{
-                                padding: '0.25rem 0.75rem 0.25rem 0.25rem',
-                                borderRadius: '2rem',
-                                background: 'rgba(255,255,255,0.4)',
-                                border: '1px solid var(--glass-border)',
-                                transition: 'all 0.2s',
-                                textDecoration: 'none',
-                                cursor: 'pointer'
-                            }}>
-                                <div style={{
-                                    width: '28px', height: '28px',
-                                    background: 'white',
-                                    borderRadius: '50%',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    color: 'var(--primary)'
-                                }}>
+                            <Link to="/profile" className="flex items-center gap-2 rounded-full border border-slate-200 bg-white py-1 pl-1 pr-3 no-underline hover:bg-slate-50">
+                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-slate-100 text-slate-600">
                                     <User size={14} />
                                 </div>
-                                <span style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)' }}>
-                                    {user.name}
-                                </span>
+                                <span className="text-sm font-semibold text-slate-900">{user.name}</span>
                             </Link>
-                            <button onClick={handleLogout} className="btn-outline" style={{
-                                border: 'none',
-                                background: 'transparent',
-                                color: 'var(--text-muted)',
-                                padding: '0.4rem',
-                                borderRadius: '50%',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer'
-                            }}>
+                            <button onClick={handleLogout} className="rounded-lg p-2 text-slate-500 hover:bg-slate-100 hover:text-slate-900">
                                 <LogOut size={18} />
                             </button>
                         </div>
                     ) : (
-                        <Link to="/login" className="btn btn-primary" style={{ textDecoration: 'none', fontSize: '0.9rem', padding: '0.5rem 1rem' }}>
+                        <Link to="/login" className="btn" style={{ fontSize: '0.9rem', minHeight: '38px', padding: '0.5rem 1rem' }}>
                             Login
                         </Link>
                     )}

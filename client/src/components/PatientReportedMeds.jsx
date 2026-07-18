@@ -13,8 +13,8 @@ const TYPE_ICONS = {
 };
 
 const TYPE_COLORS = {
-    OTC: 'bg-blue-100 text-blue-700',
-    SUPPLEMENT: 'bg-green-100 text-green-700',
+    OTC: 'bg-slate-100 text-slate-700',
+    SUPPLEMENT: 'bg-slate-100 text-slate-700',
     HERBAL: 'bg-emerald-100 text-emerald-700',
     OTHER: 'bg-gray-100 text-gray-700'
 };
@@ -131,7 +131,7 @@ const PatientReportedMeds = ({ patientId, readOnly = false }) => {
             ) : (
                 <div className="flex flex-col gap-3">
                     {meds.map(med => (
-                        <div key={med.id} className="p-4 bg-white border border-slate-100 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                        <div key={med.id} className="p-4 bg-white border border-slate-200 rounded-lg transition-colors hover:bg-slate-50">
                             <div className="flex justify-between items-start">
                                 <div>
                                     <div className="flex items-center gap-2 mb-1">

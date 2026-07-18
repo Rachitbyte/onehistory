@@ -86,7 +86,7 @@ const ConsentsPage = () => {
         <div className="container animate-fade-in" style={{ maxWidth: '1000px', paddingBottom: '4rem' }}>
 
             <header className="flex items-center gap-3 mb-8">
-                <div style={{ padding: '0.75rem', background: 'rgba(99, 102, 241, 0.1)', borderRadius: '50%', color: 'var(--primary)' }}>
+                <div style={{ padding: '0.75rem', background: 'var(--primary-soft)', borderRadius: '12px', color: 'var(--primary)' }}>
                     <Shield size={32} />
                 </div>
                 <div>
@@ -136,7 +136,7 @@ const ConsentsPage = () => {
                                 pendingRequests.map(req => (
                                     <div key={req.id} className="card flex flex-col md:flex-row justify-between items-start md:items-center gap-4" style={{ borderLeft: '4px solid var(--warning)' }}>
                                         <div>
-                                            <div className="flex items-center gap-2 text-warning-dark font-bold mb-1">
+                                            <div className="flex items-center gap-2 text-amber-800 font-bold mb-1">
                                                 <AlertCircle size={18} /> Access Requested
                                             </div>
                                             <div style={{ fontSize: '1.1rem', fontWeight: 600 }}>Doctor requesting access</div>

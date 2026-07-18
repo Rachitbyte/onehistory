@@ -99,8 +99,8 @@ const HistoryPage = () => {
                                 height: '48px',
                                 cursor: 'pointer',
                                 boxShadow: 'none',
-                                border: '1px solid transparent',
-                                backgroundColor: statusFilter === 'ALL' ? 'rgba(255,255,255,0.5)' : 'white',
+                                border: '1px solid var(--border)',
+                                backgroundColor: 'white',
                                 color: statusFilter === 'ALL' ? 'var(--text-muted)' : 'var(--text-main)',
                                 fontWeight: statusFilter === 'ALL' ? '400' : '600'
                             }}
@@ -121,8 +121,8 @@ const HistoryPage = () => {
                                 height: '48px',
                                 cursor: 'pointer',
                                 boxShadow: 'none',
-                                border: '1px solid transparent',
-                                backgroundColor: dateFilter === 'ALL_TIME' ? 'rgba(255,255,255,0.5)' : 'white',
+                                border: '1px solid var(--border)',
+                                backgroundColor: 'white',
                                 color: dateFilter === 'ALL_TIME' ? 'var(--text-muted)' : 'var(--text-main)',
                                 fontWeight: dateFilter === 'ALL_TIME' ? '400' : '600'
                             }}
@@ -149,10 +149,10 @@ const HistoryPage = () => {
                             <Link key={c.id} to={`/case/${c.id}`} style={{ textDecoration: 'none' }}>
                                 <div style={{
                                     padding: '1.25rem', borderRadius: 'var(--radius-md)',
-                                    background: 'rgba(255,255,255,0.5)', border: '1px solid transparent',
+                                    background: 'white', border: '1px solid var(--border)',
                                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
                                     transition: 'all 0.2s', cursor: 'pointer'
-                                }} className="hover:bg-white hover:shadow-sm">
+                                }} className="hover-bg-light">
                                     <div className="flex gap-4 items-center">
                                         <div style={{
                                             width: '40px', height: '40px', borderRadius: '10px',

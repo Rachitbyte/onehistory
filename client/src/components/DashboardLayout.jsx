@@ -39,7 +39,7 @@ const DashboardLayout = () => {
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
-                        boxShadow: '0 4px 12px rgba(79, 70, 229, 0.3)'
+                        boxShadow: 'var(--shadow-sm)'
                     }}
                 >
                     <Menu size={24} />

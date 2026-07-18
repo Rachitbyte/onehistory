@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { LayoutDashboard, Calendar, UserCircle, Home, Shield } from 'lucide-react';
+import { LayoutDashboard, Calendar, UserCircle, Home, Shield, X } from 'lucide-react';
 import { useAuth } from '../AuthContext';
 
 const Sidebar = ({ isOpen, onClose, isMobile }) => {
@@ -15,70 +15,46 @@ const Sidebar = ({ isOpen, onClose, isMobile }) => {
 
     return (
         <>
-            {/* Mobile Overlay */}
             {isMobile && isOpen && (
-                <div
-                    onClick={onClose}
-                    style={{
-                        position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 40
-                    }}
-                />
+                <div onClick={onClose} className="fixed inset-0 z-40 bg-slate-950/40" />
             )}
 
-            {/* Sidebar Container */}
-            <aside style={{
-                width: '256px',
-                background: 'white',
-                borderRight: '1px solid #E2E8F0',
-                display: 'flex',
-                flexDirection: 'column',
-                position: isMobile ? 'fixed' : 'sticky',
-                top: isMobile ? 0 : 'calc(70px + 1rem)', // adjusting if navbar exists
-                height: isMobile ? '100vh' : 'auto',
-                left: 0,
-                bottom: 0,
-                transform: isMobile ? (isOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
-                transition: 'transform 0.3s ease',
-                zIndex: 50,
-                boxShadow: isMobile && isOpen ? '4px 0 24px rgba(0,0,0,0.1)' : 'none'
-            }}>
-                {/* Mobile Close Button */}
+            <aside
+                className={`z-50 flex w-64 flex-col border-r border-slate-200 bg-white transition-transform duration-200 ${
+                    isMobile ? 'fixed left-0 top-0 h-screen shadow-lg' : 'sticky h-auto'
+                }`}
+                style={{
+                    top: isMobile ? 0 : 'calc(70px + 1rem)',
+                    bottom: 0,
+                    transform: isMobile ? (isOpen ? 'translateX(0)' : 'translateX(-100%)') : 'none',
+                }}
+            >
                 {isMobile && (
-                    <button onClick={onClose} style={{ position: 'absolute', top: '1rem', right: '1rem', background: 'none', border: 'none', fontSize: '1.5rem', cursor: 'pointer' }}>
-                        &times;
+                    <button onClick={onClose} className="absolute right-4 top-4 rounded-lg p-2 text-slate-500 hover:bg-slate-100">
+                        <X size={20} />
                     </button>
                 )}
 
-                {/* Brand Logo */}
-                <div style={{ padding: '2rem 1.5rem 1rem', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <div style={{
-                        background: 'var(--emerald-primary)', color: 'white',
-                        width: '32px', height: '32px', borderRadius: '8px',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center'
-                    }}>
+                <div className="flex items-center gap-3 px-6 pb-4 pt-8">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-600 text-white">
                         <Shield size={20} strokeWidth={2.5} />
                     </div>
-                    <span style={{ fontSize: '1.25rem', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--slate-900)' }}>OneHistory</span>
+                    <span className="text-xl font-semibold text-slate-900">OneHistory</span>
                 </div>
 
-                <nav style={{ display: 'flex', flexDirection: 'column', marginTop: '1rem' }}>
+                <nav className="mt-4 flex flex-col px-3">
                     {navItems.map((item) => (
                         <NavLink
                             key={item.path}
                             to={item.path}
                             onClick={() => isMobile && onClose()}
-                            style={({ isActive }) => ({
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '1rem',
-                                padding: '0.875rem 1.5rem',
-                                textDecoration: 'none',
-                                color: isActive ? 'var(--emerald-primary)' : 'var(--slate-500)',
-                                background: isActive ? '#ecfdf5' : 'transparent',
-                                fontWeight: isActive ? 600 : 500,
-                                transition: 'all 0.2s ease',
-                                borderRight: isActive ? '4px solid var(--emerald-primary)' : '4px solid transparent'
-                            })}
+                            className={({ isActive }) =>
+                                `mb-1 flex items-center gap-3 rounded-xl px-3 py-3 text-sm font-medium transition-colors ${
+                                    isActive
+                                        ? 'bg-emerald-50 text-emerald-700'
+                                        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+                                }`
+                            }
                         >
                             {({ isActive }) => (
                                 <>

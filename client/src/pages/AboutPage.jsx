@@ -26,14 +26,7 @@ const AboutPage = () => {
             </div>
 
             {/* Main Content Container */}
-            <div style={{
-                background: 'rgba(255, 255, 255, 0.5)',
-                backdropFilter: 'blur(10px)',
-                borderRadius: '16px',
-                border: '1px solid var(--glass-border)',
-                padding: '3rem',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)'
-            }}>
+            <div className="card" style={{ padding: '3rem' }}>
 
                 {/* Section 1: The Product */}
                 <section style={{ marginBottom: '3rem' }}>
@@ -46,7 +39,7 @@ const AboutPage = () => {
                         What is OneHistory?
                     </h2>
                     <p style={{
-                        color: 'var(--text-secondary)',
+                        color: 'var(--text-muted)',
                         lineHeight: '1.7',
                         fontSize: '1rem'
                     }}>
@@ -65,7 +58,7 @@ const AboutPage = () => {
                         The Problem We Solve
                     </h2>
                     <p style={{
-                        color: 'var(--text-secondary)',
+                        color: 'var(--text-muted)',
                         lineHeight: '1.7',
                         fontSize: '1rem'
                     }}>
@@ -84,7 +77,7 @@ const AboutPage = () => {
                         How It Works
                     </h2>
                     <p style={{
-                        color: 'var(--text-secondary)',
+                        color: 'var(--text-muted)',
                         lineHeight: '1.7',
                         fontSize: '1rem'
                     }}>
@@ -103,7 +96,7 @@ const AboutPage = () => {
                         Data Responsibility
                     </h2>
                     <p style={{
-                        color: 'var(--text-secondary)',
+                        color: 'var(--text-muted)',
                         lineHeight: '1.7',
                         fontSize: '1rem'
                     }}>

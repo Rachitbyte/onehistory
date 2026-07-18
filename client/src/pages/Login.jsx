@@ -6,19 +6,15 @@ import { Activity, CheckCircle } from 'lucide-react';
 const Login = () => {
     const { login } = useAuth();
     const navigate = useNavigate();
-    
+
     const [role, setRole] = useState('PATIENT'); // 'PATIENT' | 'PROVIDER'
     const [state, setState] = useState('FORM'); // 'FORM' | 'SUCCESS'
     const [error, setError] = useState('');
-    
-    // Patient Form State
+
     const [patientCreds, setPatientCreds] = useState({ id: '', password: '' });
-    
-    // Provider Form State
     const [providerCreds, setProviderCreds] = useState({ id: '', password: '', license: '' });
     const [selectedServices, setSelectedServices] = useState([]);
-    
-    // Demo quick fill maps
+
     const quickFill = (r) => {
         setRole(r === 'PROVIDER' ? 'PROVIDER' : 'PATIENT');
         if (r === 'PROVIDER') {
@@ -44,7 +40,6 @@ const Login = () => {
     const handleProviderSubmit = async (e) => {
         e.preventDefault();
         setError('');
-
         const res = await login(providerCreds.id, providerCreds.password);
         if (res.success) {
             setState('SUCCESS');
@@ -54,30 +49,9 @@ const Login = () => {
         }
     };
 
-    // Google Auth Button
     const GoogleAuthBtn = () => (
-        <button type="button" className="flex justify-center items-center gap-2 w-full mt-4" style={{
-            padding: '16px',
-            border: '2px solid var(--slate-200)',
-            borderRadius: '12px',
-            fontWeight: 700,
-            background: 'white',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            cursor: 'pointer',
-            color: 'var(--slate-900)'
-        }}
-        onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'var(--slate-50)';
-            e.currentTarget.querySelector('svg').style.transform = 'scale(1.1)';
-        }}
-        onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'white';
-            e.currentTarget.querySelector('svg').style.transform = 'scale(1)';
-        }}
-        onMouseDown={e => e.currentTarget.style.transform = 'scale(0.98)'}
-        onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-        >
-            <svg viewBox="0 0 24 24" width="20" height="20" style={{ transition: 'transform 0.3s' }}>
+        <button type="button" className="btn btn-outline w-full mt-4">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
                 <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
                 <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
                 <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
@@ -96,154 +70,68 @@ const Login = () => {
     };
 
     return (
-        <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'row', background: 'white', color: 'var(--slate-900)' }}>
-            
-            {/* Branding Sidebar (60%) */}
-            <div className="hidden lg-flex" style={{
-                width: '60%', 
-                background: 'var(--emerald-dark)',
-                position: 'relative',
-                overflow: 'hidden',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                padding: '4rem',
-                color: 'white'
-            }}>
-                {/* Abstract Circular Gradients */}
-                <div style={{
-                    position: 'absolute', top: '-10%', left: '-10%',
-                    width: '500px', height: '500px',
-                    background: 'var(--emerald-primary)', borderRadius: '50%',
-                    filter: 'blur(100px)', opacity: 0.2
-                }} />
-                <div style={{
-                    position: 'absolute', bottom: '-10%', right: '-10%',
-                    width: '600px', height: '600px',
-                    background: '#075985', borderRadius: '50%',
-                    filter: 'blur(100px)', opacity: 0.2
-                }} />
-
-                <div style={{ maxWidth: '560px', zIndex: 10, width: '100%' }}>
-                    {/* Logo Lockup */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
-                        <div style={{
-                            width: '3rem', height: '3rem', 
-                            background: 'white', borderRadius: '12px',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            color: 'var(--emerald-primary)',
-                            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
-                        }}>
-                            <Activity size={24} strokeWidth={3} />
+        <div className="min-h-screen flex bg-white text-slate-900">
+            <aside className="hidden lg:flex w-[58%] bg-slate-950 text-white flex-col justify-center px-16 py-12">
+                <div className="max-w-xl">
+                    <div className="flex items-center gap-4 mb-12">
+                        <div className="w-12 h-12 rounded-xl bg-white text-emerald-600 flex items-center justify-center">
+                            <Activity size={24} strokeWidth={2.5} />
                         </div>
-                        <span style={{ fontSize: '1.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)' }}>OneHistory</span>
+                        <span className="text-2xl font-semibold">OneHistory</span>
                     </div>
 
-                    <h1 style={{ fontSize: '3.5rem', fontWeight: 700, fontFamily: 'var(--font-heading)', lineHeight: 1.1, marginBottom: '2rem', letterSpacing: '-0.02em' }}>
+                    <h1 className="text-5xl font-semibold leading-tight tracking-normal mb-6">
                         Modernizing Medical Records.
                     </h1>
-                    
-                    <p style={{ fontSize: '1.125rem', opacity: 0.9, lineHeight: 1.6, marginBottom: '3rem', fontFamily: 'var(--font-body)' }}>
+                    <p className="text-lg text-slate-300 leading-8 mb-10">
                         Secure, unified, and instantly accessible patient history. Empowering providers and patients with triple-PIN security standards.
                     </p>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        {['Universal Access Across Clinics', 'Military-Grade Triple-PIN Encryption', 'Real-time Immutable Audit Logs'].map((feature, i) => (
-                            <div key={i} style={{
-                                background: 'rgba(255,255,255,0.05)',
-                                backdropFilter: 'blur(4px)',
-                                padding: '1rem 1.5rem',
-                                borderRadius: '12px',
-                                display: 'flex', alignItems: 'center', gap: '1rem',
-                                border: '1px solid rgba(255,255,255,0.1)'
-                            }}>
-                                <CheckCircle size={20} color="var(--emerald-light)" />
-                                <span style={{ fontWeight: 500, fontFamily: 'var(--font-body)' }}>{feature}</span>
+                    <div className="flex flex-col gap-3">
+                        {['Universal Access Across Clinics', 'Military-Grade Triple-PIN Encryption', 'Real-time Immutable Audit Logs'].map((feature) => (
+                            <div key={feature} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-3">
+                                <CheckCircle size={20} className="text-emerald-300" />
+                                <span className="font-medium text-slate-100">{feature}</span>
                             </div>
                         ))}
                     </div>
                 </div>
-            </div>
+            </aside>
 
-            {/* Functional Area (40% Desktop, 100% Mobile) */}
-            <div style={{
-                flex: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '2rem',
-                position: 'relative'
-            }}>
-                <div style={{ width: '100%', maxWidth: '448px' }} className="animate-step-content">
-                    
+            <main className="flex-1 flex items-center justify-center px-6 py-12">
+                <div className="w-full max-w-md animate-step-content">
                     {state === 'SUCCESS' ? (
-                        <div style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                            <div style={{
-                                width: '80px', height: '80px',
-                                background: 'var(--emerald-light)', color: 'var(--emerald-primary)',
-                                borderRadius: '50%',
-                                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                marginBottom: '1.5rem'
-                            }}>
+                        <div className="text-center flex flex-col items-center">
+                            <div className="w-20 h-20 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6">
                                 <CheckCircle size={40} strokeWidth={2.5} />
                             </div>
-                            <h2 style={{ fontSize: '1.875rem', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--slate-900)', marginBottom: '1rem' }}>Processing Request</h2>
-                            
-                            <div style={{
-                                background: '#f0fdf4', color: '#166534',
-                                padding: '1rem 1.5rem', borderRadius: '12px',
-                                fontSize: '0.95rem', fontWeight: 500,
-                                marginTop: '1rem',
-                                border: '1px solid #bbf7d0'
-                            }}>
+                            <h2 className="text-3xl font-semibold text-slate-900 mb-4">Processing Request</h2>
+                            <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-6 py-4 text-sm font-medium text-emerald-900">
                                 Secure tunnel established. Establishing connection...
                             </div>
                         </div>
                     ) : (
                         <>
-                            <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-                                <h2 style={{ fontSize: '2rem', fontWeight: 700, fontFamily: 'var(--font-heading)', color: 'var(--slate-900)', marginBottom: '0.5rem' }}>Welcome Back</h2>
-                                <p style={{ color: 'var(--text-muted)', fontSize: '1rem', fontFamily: 'var(--font-body)' }}>Sign in or register your secure identifier</p>
+                            <div className="text-center mb-8">
+                                <h2 className="text-3xl font-semibold text-slate-900 mb-2">Welcome Back</h2>
+                                <p className="text-slate-500">Sign in or register your secure identifier</p>
                             </div>
 
                             {error && (
-                                <div style={{
-                                    background: '#fee2e2', color: '#dc2626',
-                                    padding: '1rem', borderRadius: '12px',
-                                    fontSize: '0.9rem', textAlign: 'center',
-                                    marginBottom: '1.5rem', fontWeight: 500,
-                                    border: '1px solid #fecaca'
-                                }}>
+                                <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-center text-sm font-medium text-red-700">
                                     {error}
                                 </div>
                             )}
 
-                            {/* Role Switcher */}
-                            <div style={{
-                                background: '#f1f5f9',
-                                padding: '4px',
-                                borderRadius: '12px',
-                                display: 'flex',
-                                marginBottom: '2rem'
-                            }}>
+                            <div className="mb-8 flex rounded-xl bg-slate-100 p-1">
                                 {['PATIENT', 'PROVIDER'].map(r => (
                                     <button
                                         key={r}
                                         type="button"
                                         onClick={() => setRole(r)}
-                                        style={{
-                                            flex: 1,
-                                            padding: '0.5rem 1rem',
-                                            borderRadius: '8px',
-                                            border: 'none',
-                                            fontWeight: 600,
-                                            fontSize: '0.9rem',
-                                            cursor: 'pointer',
-                                            background: role === r ? 'white' : 'transparent',
-                                            color: role === r ? 'var(--emerald-primary)' : '#64748b',
-                                            boxShadow: role === r ? '0 1px 3px rgba(0,0,0,0.1)' : 'none',
-                                            transition: 'all 0.2s ease'
-                                        }}
+                                        className={`flex-1 rounded-lg px-4 py-2 text-sm font-semibold transition-colors ${
+                                            role === r ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500'
+                                        }`}
                                     >
                                         {r}
                                     </button>
@@ -252,37 +140,22 @@ const Login = () => {
 
                             <GoogleAuthBtn />
 
-                            <div style={{ display: 'flex', alignItems: 'center', margin: '1.5rem 0', color: '#94a3b8' }}>
-                                <div style={{ flex: 1, height: '1px', background: 'var(--slate-200)' }}></div>
-                                <span style={{ padding: '0 1rem', fontSize: '0.85rem', fontWeight: 500 }}>or continue with</span>
-                                <div style={{ flex: 1, height: '1px', background: 'var(--slate-200)' }}></div>
+                            <div className="my-6 flex items-center text-slate-400">
+                                <div className="h-px flex-1 bg-slate-200" />
+                                <span className="px-4 text-xs font-medium">or continue with</span>
+                                <div className="h-px flex-1 bg-slate-200" />
                             </div>
 
-                            {/* Dynamic Forms */}
-                            <form onSubmit={role === 'PATIENT' ? handlePatientSubmit : handleProviderSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                
+                            <form onSubmit={role === 'PATIENT' ? handlePatientSubmit : handleProviderSubmit} className="flex flex-col gap-4">
                                 {role === 'PATIENT' && (
                                     <>
                                         <div>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem' }}>Patient ID</label>
-                                            <input 
-                                                style={{ width: '100%', height: '44px', padding: '12px', background: 'var(--slate-50)', border: '1px solid var(--slate-200)', borderRadius: '12px', fontSize: '1rem', outline: 'none' }}
-                                                value={patientCreds.id}
-                                                onChange={e => setPatientCreds({...patientCreds, id: e.target.value})}
-                                                onFocus={e => e.target.style.borderColor = 'var(--emerald-primary)'}
-                                                onBlur={e => e.target.style.borderColor = 'var(--slate-200)'}
-                                            />
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Patient ID</label>
+                                            <input className="input" value={patientCreds.id} onChange={e => setPatientCreds({ ...patientCreds, id: e.target.value })} />
                                         </div>
                                         <div>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem' }}>Password / Triple-PIN</label>
-                                            <input 
-                                                type="password"
-                                                style={{ width: '100%', height: '44px', padding: '12px', background: 'var(--slate-50)', border: '1px solid var(--slate-200)', borderRadius: '12px', fontSize: '1rem', outline: 'none' }}
-                                                value={patientCreds.password}
-                                                onChange={e => setPatientCreds({...patientCreds, password: e.target.value})}
-                                                onFocus={e => e.target.style.borderColor = 'var(--emerald-primary)'}
-                                                onBlur={e => e.target.style.borderColor = 'var(--slate-200)'}
-                                            />
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Password / Triple-PIN</label>
+                                            <input className="input" type="password" value={patientCreds.password} onChange={e => setPatientCreds({ ...patientCreds, password: e.target.value })} />
                                         </div>
                                     </>
                                 )}
@@ -290,109 +163,56 @@ const Login = () => {
                                 {role === 'PROVIDER' && (
                                     <>
                                         <div>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem' }}>Medical Identifier (ID / Email)</label>
-                                            <input 
-                                                style={{ width: '100%', height: '44px', padding: '12px', background: 'var(--slate-50)', border: '1px solid var(--slate-200)', borderRadius: '12px', fontSize: '1rem', outline: 'none' }}
-                                                value={providerCreds.id}
-                                                onChange={e => setProviderCreds({...providerCreds, id: e.target.value})}
-                                                onFocus={e => e.target.style.borderColor = 'var(--emerald-primary)'}
-                                                onBlur={e => e.target.style.borderColor = 'var(--slate-200)'}
-                                            />
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Medical Identifier (ID / Email)</label>
+                                            <input className="input" value={providerCreds.id} onChange={e => setProviderCreds({ ...providerCreds, id: e.target.value })} />
                                         </div>
                                         <div>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem' }}>Medical License Number</label>
-                                            <input 
-                                                style={{ width: '100%', height: '44px', padding: '12px', background: 'var(--slate-50)', border: '1px solid var(--slate-200)', borderRadius: '12px', fontSize: '1rem', outline: 'none' }}
-                                                value={providerCreds.license}
-                                                onChange={e => setProviderCreds({...providerCreds, license: e.target.value})}
-                                                onFocus={e => e.target.style.borderColor = 'var(--emerald-primary)'}
-                                                onBlur={e => e.target.style.borderColor = 'var(--slate-200)'}
-                                            />
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Medical License Number</label>
+                                            <input className="input" value={providerCreds.license} onChange={e => setProviderCreds({ ...providerCreds, license: e.target.value })} />
                                         </div>
-                                        
-                                        {/* Service Type Selector Grid */}
-                                        <div style={{ marginTop: '0.5rem' }}>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem' }}>Service Type</label>
-                                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                                        <div>
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Service Type</label>
+                                            <div className="grid grid-cols-2 gap-2">
                                                 {['Consultation', 'Laboratory', 'Pharmacy', 'Surgical'].map(srv => {
                                                     const isSelected = selectedServices.includes(srv);
                                                     return (
-                                                        <div 
+                                                        <button
                                                             key={srv}
+                                                            type="button"
                                                             onClick={() => toggleService(srv)}
-                                                            style={{
-                                                                padding: '8px',
-                                                                background: isSelected ? 'var(--emerald-light)' : 'var(--slate-50)',
-                                                                borderRadius: '8px',
-                                                                border: isSelected ? '1px solid var(--emerald-primary)' : '1px solid var(--slate-200)',
-                                                                display: 'flex', alignItems: 'center', gap: '0.5rem',
-                                                                cursor: 'pointer',
-                                                                transition: 'all 0.2s',
-                                                                color: isSelected ? 'var(--emerald-dark)' : 'var(--slate-900)'
-                                                            }}
+                                                            className={`flex items-center gap-2 rounded-lg border px-3 py-2 text-left text-xs font-medium transition-colors ${
+                                                                isSelected ? 'border-emerald-300 bg-emerald-50 text-emerald-900' : 'border-slate-200 bg-white text-slate-700'
+                                                            }`}
                                                         >
-                                                            <input type="checkbox" checked={isSelected} readOnly style={{ accentColor: 'var(--emerald-primary)', cursor: 'pointer' }} />
-                                                            <span style={{ fontSize: '12px', fontWeight: 500 }}>{srv}</span>
-                                                        </div>
-                                                    )
+                                                            <input type="checkbox" checked={isSelected} readOnly className="accent-emerald-600" />
+                                                            <span>{srv}</span>
+                                                        </button>
+                                                    );
                                                 })}
                                             </div>
                                         </div>
-
                                         <div>
-                                            <label style={{ fontSize: '0.875rem', fontWeight: 500, color: 'var(--slate-900)', display: 'block', marginBottom: '0.5rem', marginTop: '0.5rem' }}>Password / Triple-PIN</label>
-                                            <input 
-                                                type="password"
-                                                style={{ width: '100%', height: '44px', padding: '12px', background: 'var(--slate-50)', border: '1px solid var(--slate-200)', borderRadius: '12px', fontSize: '1rem', outline: 'none' }}
-                                                value={providerCreds.password}
-                                                onChange={e => setProviderCreds({...providerCreds, password: e.target.value})}
-                                                onFocus={e => e.target.style.borderColor = 'var(--emerald-primary)'}
-                                                onBlur={e => e.target.style.borderColor = 'var(--slate-200)'}
-                                            />
+                                            <label className="mb-2 block text-sm font-medium text-slate-900">Password / Triple-PIN</label>
+                                            <input className="input" type="password" value={providerCreds.password} onChange={e => setProviderCreds({ ...providerCreds, password: e.target.value })} />
                                         </div>
                                     </>
                                 )}
 
-                                <button 
-                                    className="w-full mt-4" 
-                                    style={{
-                                        background: 'var(--emerald-primary)',
-                                        color: 'white',
-                                        padding: '16px',
-                                        borderRadius: '12px',
-                                        fontSize: '1rem',
-                                        fontWeight: 700,
-                                        border: 'none',
-                                        cursor: 'pointer',
-                                        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                                        boxShadow: '0 10px 20px -5px rgba(5, 150, 105, 0.4)'
-                                    }}
-                                    onMouseEnter={e => e.currentTarget.style.filter = 'brightness(1.1)'}
-                                    onMouseLeave={e => e.currentTarget.style.filter = 'none'}
-                                    onMouseDown={e => e.currentTarget.style.transform = 'scale(0.98)'}
-                                    onMouseUp={e => e.currentTarget.style.transform = 'scale(1)'}
-                                >
+                                <button className="btn w-full mt-2">
                                     Proceed Securely
                                 </button>
                             </form>
-                            
-                            {/* DEMO QUICK FILL HELPER (optional convenience) */}
-                            <div style={{ marginTop: '2rem', textAlign: 'center', color: 'var(--slate-900)', fontSize: '0.8rem', opacity: 0.5 }}>
-                                [ Demo Fillers ] &middot;
-                                <button type="button" onClick={() => quickFill('PATIENT')} style={{background:'transparent', border:'none', cursor:'pointer', textDecoration:'underline', marginLeft: '4px'}}>Patient</button> | 
-                                <button type="button" onClick={() => quickFill('PROVIDER')} style={{background:'transparent', border:'none', cursor:'pointer', textDecoration:'underline'}}>Provider</button>
-                            </div>
 
+                            <div className="mt-8 text-center text-xs text-slate-400">
+                                [ Demo Fillers ] &middot;
+                                <button type="button" onClick={() => quickFill('PATIENT')} className="ml-1 underline">Patient</button>
+                                {' | '}
+                                <button type="button" onClick={() => quickFill('PROVIDER')} className="underline">Provider</button>
+                            </div>
                         </>
                     )}
                 </div>
-            </div>
-            
-            <style>{`
-                @media (min-width: 1024px) {
-                    .lg-flex { display: flex !important; }
-                }
-            `}</style>
+            </main>
         </div>
     );
 };

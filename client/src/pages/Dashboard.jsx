@@ -155,8 +155,7 @@ const Dashboard = () => {
             {/* STICKY HEADER */}
             <header style={{
                 position: 'sticky', top: 0, zIndex: 40,
-                height: '72px', background: 'rgba(255, 255, 255, 0.8)',
-                backdropFilter: 'blur(12px)',
+                height: '72px', background: 'white',
                 borderBottom: '1px solid var(--slate-200)',
                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                 padding: '0 2rem'
@@ -210,7 +209,7 @@ const Dashboard = () => {
                             
                             <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem', flexWrap: 'wrap' }}>
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--emerald-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 0 4px #d1fae5' }}>
+                                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: 'var(--emerald-primary)', color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'none' }}>
                                         <CheckCircle size={16} />
                                     </div>
                                     <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--emerald-primary)' }}>Link Hospital</span>
@@ -232,10 +231,10 @@ const Dashboard = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem' }}>
                             {/* Credit Wallet Card */}
                             <div className="card rad-24" style={{ 
-                                background: 'linear-gradient(135deg, #334155, #1e293b, #0f172a)', 
+                                background: '#111827', 
                                 color: 'white', padding: '2rem', position: 'relative', overflow: 'hidden'
                             }}>
-                                <div style={{ position: 'absolute', top: '-50px', left: '-50px', width: '200px', height: '200px', background: 'rgba(5, 150, 105, 0.2)', filter: 'blur(3xl)', borderRadius: '50%' }}></div>
+                                
                                 <div style={{ position: 'relative', zIndex: 10 }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                                         <span style={{ fontSize: '0.9rem', color: '#94a3b8', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Available Medical Credit</span>
@@ -255,14 +254,14 @@ const Dashboard = () => {
 
                             {/* Quick Actions Grid */}
                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                <div className="card rad-24" style={{ padding: '1.5rem', background: '#ecfdf5', border: '2px solid #34d399', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', cursor: 'pointer' }}>
-                                    <div style={{ background: 'white', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
+                                <div className="card rad-24" style={{ padding: '1.5rem', background: '#ecfdf5', border: '1px solid #a7f3d0', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', cursor: 'pointer' }}>
+                                    <div style={{ background: 'white', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#059669', boxShadow: 'none' }}>
                                         <Activity size={28} />
                                     </div>
                                     <span style={{ fontWeight: 700, color: '#064e3b', fontFamily: 'var(--font-heading)' }}>Apply</span>
                                 </div>
                                 <Link to="/appointments" className="card rad-24" style={{ padding: '1.5rem', background: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', textDecoration: 'none' }}>
-                                    <div style={{ background: '#f8fafc', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--sky-blue)' }}>
+                                    <div style={{ background: '#f8fafc', width: '56px', height: '56px', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}>
                                         <Calendar size={28} />
                                     </div>
                                     <span style={{ fontWeight: 700, color: 'var(--slate-900)', fontFamily: 'var(--font-heading)' }}>Book Appt</span>
@@ -442,7 +441,7 @@ const Dashboard = () => {
                                             return (
                                                 <div key={a.id} className="card rad-24" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'white' }}>
                                                     <div className="flex items-center gap-4">
-                                                        <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#e0e7ff', color: '#4f46e5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                        <div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#ecfdf5', color: '#059669', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                             <Calendar size={20} />
                                                         </div>
                                                         <div>
@@ -467,7 +466,6 @@ const Dashboard = () => {
                     position: 'fixed', top: 0, left: 0, right: 0, bottom: 0,
                     background: 'rgba(0,0,0,0.5)', zIndex: 9999,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    backdropFilter: 'blur(4px)'
                 }} onClick={() => { setPatientProfile(null); setPendingCreation(null); }}>
                     <div
                         className="animate-fade-in"
@@ -476,11 +474,11 @@ const Dashboard = () => {
                             width: '90%', maxWidth: '700px', // Widened for more data
                             borderRadius: '16px',
                             overflow: 'hidden',
-                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
+                            boxShadow: 'var(--shadow-md)'
                         }}
                         onClick={e => e.stopPropagation()}
                     >
-                        <div style={{ background: pendingCreation ? '#6366f1' : '#ef4444', padding: '1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ background: pendingCreation ? 'var(--primary)' : '#dc2626', padding: '1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ display: 'flex', flexDirection: 'column' }}>
                                 <h4 style={{ color: 'white', fontWeight: 800, margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', fontSize: '1rem' }}>
                                     {pendingCreation ? 'Verify Patient Identity' : 'Basic Medical Profile'}
@@ -610,3 +608,4 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+

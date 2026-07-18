@@ -244,14 +244,13 @@ const CaseDetail = () => {
                                             alignItems: 'center',
                                             gap: '0.5rem',
                                             marginBottom: '0.75rem',
-                                            background: 'rgba(255, 255, 255, 0.5)',
-                                            backdropFilter: 'blur(4px)',
-                                            border: '1px solid rgba(255, 255, 255, 0.8)',
+                                            background: 'var(--surface-muted)',
+                                            border: '1px solid var(--border)',
                                             padding: '0.25rem 0.75rem',
                                             borderRadius: '2rem',
                                             fontSize: '0.8rem',
                                             color: 'var(--text-muted)',
-                                            boxShadow: '0 2px 4px rgba(0,0,0,0.02)'
+                                            boxShadow: 'none'
                                         }}>
                                             <Clock size={12} style={{ color: 'var(--primary)' }} />
                                             <span style={{ fontWeight: 600, letterSpacing: '0.02em' }}>

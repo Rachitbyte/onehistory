@@ -131,7 +131,7 @@ const DocumentList = ({ caseId, refreshTrigger }) => {
     return (
         <div className="flex flex-col gap-3 max-h-[400px] overflow-y-auto">
             {documents.map((doc) => (
-                <div key={doc.id} className="flex items-center gap-3 p-3 bg-white border rounded hover:shadow-sm transition-shadow">
+                <div key={doc.id} className="flex items-center gap-3 p-3 bg-white border rounded transition-colors hover:bg-slate-50">
                     <div className="w-10 h-10 rounded bg-slate-50 flex items-center justify-center border text-slate-500 overflow-hidden" style={{ minWidth: '2.5rem' }}>
                         {getIcon(doc)}
                     </div>
@@ -147,14 +147,14 @@ const DocumentList = ({ caseId, refreshTrigger }) => {
                     <div className="flex gap-2">
                         <button
                             onClick={() => handlePreview(doc)}
-                            className="btn btn-sm btn-ghost p-1 text-slate-500 hover:text-blue-600"
+                            className="btn btn-sm btn-ghost p-1 text-slate-500 hover:text-slate-900"
                             title="Preview"
                         >
                             <Eye size={16} />
                         </button>
                         <button
                             onClick={() => handleDownload(doc.file_path, doc.original_name)}
-                            className="btn btn-sm btn-ghost p-1 text-slate-500 hover:text-green-600"
+                            className="btn btn-sm btn-ghost p-1 text-slate-500 hover:text-emerald-700"
                             title="Download"
                         >
                             <Download size={16} />

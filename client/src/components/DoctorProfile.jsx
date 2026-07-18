@@ -17,11 +17,11 @@ const DoctorProfile = ({ user, profile, onUpdate }) => {
     return (
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             {/* Header / Identity */}
-            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div className="card" style={{ padding: '2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                 <div style={{
                     width: '80px', height: '80px',
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, var(--primary), var(--primary-light))',
+                    background: 'var(--primary)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'white', fontWeight: 700, fontSize: '2rem'
                 }}>

@@ -17,11 +17,11 @@ const PatientProfile = ({ user, profile, onUpdate }) => {
     return (
         <div>
             {/* Header / Identity */}
-            <div className="glass-panel" style={{ padding: '2rem', borderRadius: '16px', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div className="card" style={{ padding: '2rem', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                 <div style={{
                     width: '80px', height: '80px',
                     borderRadius: '50%',
-                    background: 'linear-gradient(135deg, var(--accent), #22d3ee)',
+                    background: 'var(--primary)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     color: 'white', fontWeight: 700, fontSize: '2rem'
                 }}>
@@ -39,8 +39,8 @@ const PatientProfile = ({ user, profile, onUpdate }) => {
 
             {/* Medical Record Ownership Statement */}
             <div style={{
-                background: 'rgba(79, 70, 229, 0.05)',
-                border: '1px solid rgba(79, 70, 229, 0.2)',
+                background: 'var(--primary-soft)',
+                border: '1px solid #a7f3d0',
                 borderRadius: '12px',
                 padding: '1.5rem',
                 marginBottom: '2rem',

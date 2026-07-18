@@ -56,7 +56,7 @@ const ProfilePage = () => {
             )}
 
             {/* Account Actions */}
-            <div style={{ maxWidth: '800px', margin: '3rem auto 0 auto', textAlign: 'center', borderTop: '1px solid var(--glass-border)', paddingTop: '2rem' }}>
+            <div style={{ maxWidth: '800px', margin: '3rem auto 0 auto', textAlign: 'center', borderTop: '1px solid var(--border)', paddingTop: '2rem' }}>
                 <button
                     onClick={logout}
                     style={{

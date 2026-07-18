@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useAuth } from '../AuthContext';
 import api from '../api';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { Calendar, Plus, History, Clock, ArrowLeft } from 'lucide-react';
+import { useLocation } from 'react-router-dom';
+import { Calendar, Plus } from 'lucide-react';
 import AppointmentCard from '../components/AppointmentCard';
 import AppointmentForm from '../components/AppointmentForm';
 import BackButton from '../components/BackButton';
 
 const AppointmentsPage = () => {
-    const navigate = useNavigate();
     const location = useLocation();
     const { user } = useAuth();
     const [activeTab, setActiveTab] = useState('upcoming'); // 'upcoming' | 'history'
@@ -86,107 +85,39 @@ const AppointmentsPage = () => {
     );
 
     return (
-        <div className="container animate-fade-in pt-24" style={{ paddingBottom: '5rem' }}>
-            <button
-                onClick={() => navigate('/dashboard')}
-                style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '12px',
-                    padding: '12px 24px',
-                    marginBottom: '32px',
-                    borderRadius: '50px',
-                    border: '1px solid rgba(255, 255, 255, 0.6)',
-                    background: 'rgba(255, 255, 255, 0.4)',
-                    backdropFilter: 'blur(16px)',
-                    WebkitBackdropFilter: 'blur(16px)',
-                    boxShadow: '0 8px 32px rgba(31, 38, 135, 0.1)',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    position: 'relative',
-                    overflow: 'hidden'
-                }}
-            >
-                <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    padding: '8px',
-                    borderRadius: '50%',
-                    background: 'rgba(255, 255, 255, 0.5)',
-                    color: '#4f46e5'
-                }}>
-                    <ArrowLeft size={20} />
-                </div>
-                <span style={{
-                    fontFamily: 'sans-serif',
-                    fontWeight: 700,
-                    fontSize: '1rem',
-                    color: '#334155',
-                    letterSpacing: '-0.02em'
-                }}>
-                    Go Back Home
-                </span>
-            </button>
+        <div className="container animate-fade-in pt-10" style={{ paddingBottom: '5rem' }}>
+            <BackButton />
 
             {/* Header Section */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '32px', flexWrap: 'wrap', gap: '16px' }}>
                 <div>
-                    <h1 style={{ fontFamily: 'sans-serif', fontSize: '2.5rem', fontWeight: '800', marginBottom: '0.5rem', color: '#1e293b' }}>
+                    <h1 className="heading">
                         {user.role === 'DOCTOR' ? 'Appointments' : 'My Appointments'}
                     </h1>
-                    <p style={{ fontSize: '1.1rem', color: '#64748b' }}>
+                    <p className="text-muted" style={{ fontSize: '1rem' }}>
                         {user.role === 'DOCTOR' ? 'Manage upcoming visits and requests.' : 'Manage your scheduled visits and history.'}
                     </p>
                 </div>
 
                 {user.role === 'PATIENT' && (
-                    <button
-                        onClick={() => { setRescheduleData(null); setShowBookModal(true); }}
-                        style={{
-                            display: 'flex', alignItems: 'center', gap: '8px',
-                            padding: '12px 24px', borderRadius: '50px',
-                            background: '#4f46e5', color: 'white',
-                            border: 'none', boxShadow: '0 4px 6px -1px rgba(79, 70, 229, 0.5)',
-                            cursor: 'pointer', fontWeight: '600', fontSize: '1rem',
-                            transition: 'all 0.2s ease'
-                        }}
-                    >
+                    <button onClick={() => { setRescheduleData(null); setShowBookModal(true); }} className="btn">
                         <Plus size={20} /> Book Appointment
                     </button>
                 )}
             </div>
 
-            {/* Glass Tabs */}
+            {/* Tabs */}
             <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '32px' }}>
-                <div style={{
-                    background: 'rgba(255,255,255,0.5)', backdropFilter: 'blur(10px)',
-                    padding: '6px', borderRadius: '50px', display: 'inline-flex', gap: '4px',
-                    border: '1px solid rgba(255,255,255,0.5)'
-                }}>
+                <div className="inline-flex gap-1 rounded-xl border border-slate-200 bg-slate-100 p-1">
                     <button
                         onClick={() => setActiveTab('upcoming')}
-                        style={{
-                            padding: '10px 32px', borderRadius: '50px',
-                            border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.95rem',
-                            background: activeTab === 'upcoming' ? 'white' : 'transparent',
-                            color: activeTab === 'upcoming' ? '#4f46e5' : '#64748b',
-                            boxShadow: activeTab === 'upcoming' ? '0 4px 6px -1px rgba(0,0,0,0.05)' : 'none',
-                            transition: 'all 0.3s ease'
-                        }}
+                        className={`rounded-lg px-8 py-2 text-sm font-semibold transition-colors ${activeTab === 'upcoming' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500'}`}
                     >
                         Upcoming
                     </button>
                     <button
                         onClick={() => setActiveTab('history')}
-                        style={{
-                            padding: '10px 32px', borderRadius: '50px',
-                            border: 'none', cursor: 'pointer', fontWeight: '600', fontSize: '0.95rem',
-                            background: activeTab === 'history' ? 'white' : 'transparent',
-                            color: activeTab === 'history' ? '#4f46e5' : '#64748b',
-                            boxShadow: activeTab === 'history' ? '0 4px 6px -1px rgba(0,0,0,0.05)' : 'none',
-                            transition: 'all 0.3s ease'
-                        }}
+                        className={`rounded-lg px-8 py-2 text-sm font-semibold transition-colors ${activeTab === 'history' ? 'bg-white text-emerald-700 shadow-sm' : 'text-slate-500'}`}
                     >
                         History
                     </button>
@@ -202,7 +133,7 @@ const AppointmentsPage = () => {
                     </div>
                 ) : appointments.length === 0 ? (
                     <div className="card text-center py-16 flex flex-col items-center justify-center opacity-80" style={{ minHeight: '300px' }}>
-                        <div className="w-16 h-16 bg-blue-50 text-blue-300 rounded-full flex items-center justify-center mb-4">
+                        <div className="w-16 h-16 bg-slate-100 text-slate-400 rounded-full flex items-center justify-center mb-4">
                             <Calendar size={32} />
                         </div>
                         <h3 className="subheading" style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>No Appointments Found</h3>

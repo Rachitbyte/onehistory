@@ -4,6 +4,20 @@ import { Calendar, Clock, Video, Mic, MapPin, CheckCircle, XCircle, RotateCw, Ch
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
+const statusBadgeClass = (status) => {
+    switch (status) {
+        case 'CONFIRMED':
+            return 'badge-green';
+        case 'CANCELLED':
+        case 'NO_SHOW':
+            return 'badge-red';
+        case 'REQUESTED':
+            return 'badge-warning';
+        default:
+            return 'badge';
+    }
+};
+
 const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
     const { user } = useAuth();
     const [loading, setLoading] = useState(false);
@@ -22,7 +36,6 @@ const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
     const isPast = new Date() > new Date(startDate.getTime() + duration_minutes * 60000);
     const isHistory = ['COMPLETED', 'CANCELLED', 'NO_SHOW'].includes(status) || isPast;
 
-    // --- Helpers ---
     const getTypeIcon = (t) => {
         switch (t) {
             case 'VIDEO': return <Video size={14} />;
@@ -45,50 +58,18 @@ const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
         }
     };
 
-    // --- Permissions ---
     const canConfirm = isDoctor && status === 'REQUESTED' && !isHistory;
     const canCancel = ['REQUESTED', 'CONFIRMED'].includes(status) && !isHistory;
     const canReschedule = ['REQUESTED', 'CONFIRMED'].includes(status) && !isHistory;
 
-    // --- Dashboard Compact Mode ---
     if (variant === 'dashboard') {
-        const statusColors = {
-            CONFIRMED: { bg: '#dcfce7', text: '#166534' },
-            REQUESTED: { bg: '#fef9c3', text: '#854d0e' },
-            CANCELLED: { bg: '#fee2e2', text: '#991b1b' },
-            COMPLETED: { bg: '#eff6ff', text: '#1e40af' },
-            default: { bg: '#f1f5f9', text: '#475569' }
-        };
-        const sColor = statusColors[status] || statusColors.default;
-
         return (
-            <div className="group dashboard-appointment-item" style={{
-                background: '#f1f5f9',
-                borderRadius: '8px',
-                padding: '12px',
-                border: 'none',
-                boxShadow: 'none',
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                transition: 'background 0.2s ease',
-                cursor: 'pointer'
-            }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
-                        <span style={{
-                            fontSize: '0.65rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em',
-                            padding: '2px 6px', borderRadius: '4px',
-                            background: sColor.bg, color: sColor.text
-                        }}>
-                            {status}
-                        </span>
-                    </div>
-                    <span style={{ fontSize: '0.95rem', fontWeight: '600', color: '#334155' }}>
-                        {otherPartyName}
-                    </span>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem', color: '#64748b', fontWeight: '500' }}>
-                        <Clock size={12} className="text-slate-400" />
+            <div className="dashboard-appointment-item flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-white p-3">
+                <div className="flex flex-col gap-1">
+                    <span className={`badge ${statusBadgeClass(status)}`}>{status}</span>
+                    <span className="text-sm font-semibold text-slate-800">{otherPartyName}</span>
+                    <div className="flex items-center gap-1.5 text-xs font-medium text-slate-500">
+                        <Clock size={12} />
                         <span>{format(startDate, 'MMM d, h:mm a')}</span>
                     </div>
                 </div>
@@ -97,81 +78,37 @@ const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
     }
 
     return (
-        <div style={{
-            background: 'rgba(255, 255, 255, 0.7)',
-            backdropFilter: 'blur(10px)',
-            borderRadius: '24px',
-            border: '1px solid rgba(255, 255, 255, 0.8)',
-            boxShadow: '0 4px 6px rgba(0,0,0,0.02), 0 10px 15px rgba(0,0,0,0.05)',
-            marginBottom: '20px',
-            overflow: 'hidden',
-            transition: 'transform 0.2s',
-            opacity: isHistory ? 0.7 : 1,
-            filter: isHistory ? 'grayscale(0.5)' : 'none'
-        }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(100px, auto) 1fr auto', gap: '0' }}>
-
-                {/* 1. Date Column */}
-                <div style={{
-                    background: isHistory ? '#f1f5f9' : '#4f46e5',
-                    color: isHistory ? '#94a3b8' : 'white',
-                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-                    padding: '24px',
-                    textAlign: 'center',
-                    minWidth: '100px'
-                }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <span style={{ fontSize: '0.8rem', fontWeight: '700', textTransform: 'uppercase', opacity: 0.9 }}>{format(startDate, 'EEE')}</span>
-                        <span style={{ fontSize: '2.5rem', fontWeight: '800', lineHeight: '1' }}>{format(startDate, 'dd')}</span>
-                        <span style={{ fontSize: '0.9rem', fontWeight: '500', textTransform: 'uppercase', opacity: 0.9 }}>{format(startDate, 'MMM')}</span>
-                    </div>
+        <div className={`mb-5 overflow-hidden rounded-xl border border-slate-200 bg-white ${isHistory ? 'opacity-70' : ''}`}>
+            <div className="grid gap-0 md:grid-cols-[110px_1fr_auto]">
+                <div className={`${isHistory ? 'bg-slate-100 text-slate-500' : 'bg-slate-950 text-white'} flex min-w-[100px] flex-col items-center justify-center p-6 text-center`}>
+                    <span className="text-xs font-semibold uppercase">{format(startDate, 'EEE')}</span>
+                    <span className="text-4xl font-semibold leading-none">{format(startDate, 'dd')}</span>
+                    <span className="text-sm font-medium uppercase">{format(startDate, 'MMM')}</span>
                 </div>
 
-                {/* 2. Main Content */}
-                <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-
-                    {/* Top Row: Status & Time */}
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{
-                            padding: '4px 12px', borderRadius: '50px', fontSize: '0.75rem', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em',
-                            ...(() => {
-                                switch (status) {
-                                    case 'CONFIRMED': return { background: '#d1fae5', color: '#047857', border: '1px solid #a7f3d0' };
-                                    case 'REQUESTED': return { background: '#fef3c7', color: '#b45309', border: '1px solid #fde68a' };
-                                    case 'CANCELLED': return { background: '#fef2f2', color: '#ef4444', border: '1px solid #fecaca', textDecoration: 'line-through' };
-                                    case 'COMPLETED': return { background: '#eff6ff', color: '#2563eb', border: '1px solid #bfdbfe' };
-                                    default: return { background: '#f1f5f9', color: '#64748b' };
-                                }
-                            })()
-                        }}>
-                            {status}
-                        </span>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', fontWeight: '600', color: '#94a3b8' }}>
+                <div className="flex flex-col gap-3 p-6">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <span className={`badge ${statusBadgeClass(status)}`}>{status}</span>
+                        <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
                             <Clock size={14} />
                             {format(startDate, 'h:mm a')}
-                            <span>•</span>
+                            <span>&middot;</span>
                             <span>{duration_minutes} min</span>
                         </div>
                     </div>
 
-                    {/* Middle: Info */}
                     <div>
-                        <h3 style={{ fontSize: '1.25rem', fontWeight: '800', color: '#1e293b', marginBottom: '4px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            {otherPartyName}
-                        </h3>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.9rem', color: '#64748b', fontWeight: '500' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', background: '#f8fafc', padding: '4px 10px', borderRadius: '8px', border: '1px solid #e2e8f0' }}>
-                                {getTypeIcon(type)}
-                                <span style={{ textTransform: 'capitalize' }}>{type.toLowerCase().replace('_', ' ')}</span>
-                            </div>
+                        <h3 className="mb-2 text-xl font-semibold text-slate-900">{otherPartyName}</h3>
+                        <div className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-1.5 text-sm font-medium text-slate-600">
+                            {getTypeIcon(type)}
+                            <span className="capitalize">{type.toLowerCase().replace('_', ' ')}</span>
                         </div>
                     </div>
 
-                    {/* Bottom: Tags */}
                     {reason_tags && (
-                        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                        <div className="flex flex-wrap gap-2">
                             {JSON.parse(reason_tags).map((tag, i) => (
-                                <span key={i} style={{ fontSize: '0.75rem', fontWeight: '600', color: '#64748b', background: '#f1f5f9', padding: '4px 8px', borderRadius: '6px', border: '1px solid #e2e8f0' }}>
+                                <span key={i} className="rounded-md border border-slate-200 bg-slate-50 px-2 py-1 text-xs font-medium text-slate-500">
                                     #{tag}
                                 </span>
                             ))}
@@ -179,64 +116,20 @@ const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
                     )}
                 </div>
 
-                {/* 3. Actions (Right Side) */}
                 {!isHistory && (
-                    <div style={{
-                        padding: '24px',
-                        borderLeft: '1px solid rgba(255,255,255,0.5)',
-                        display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '12px',
-                        background: 'rgba(248, 250, 252, 0.5)'
-                    }}>
+                    <div className="flex items-center justify-center gap-2 border-t border-slate-200 bg-slate-50 p-4 md:flex-col md:border-l md:border-t-0">
                         {canConfirm && (
-                            <button
-                                onClick={() => handleStatusChange('CONFIRMED')}
-                                disabled={loading}
-                                title="Confirm Appointment"
-                                style={{
-                                    width: '42px', height: '42px', borderRadius: '50%', border: 'none', cursor: 'pointer',
-                                    background: '#ecfdf5', color: '#059669', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.1)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    transition: 'transform 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                            >
+                            <button onClick={() => handleStatusChange('CONFIRMED')} disabled={loading} title="Confirm Appointment" className="rounded-lg border border-emerald-200 bg-emerald-50 p-2 text-emerald-700 hover:bg-emerald-100">
                                 <CheckCircle size={20} />
                             </button>
                         )}
-
                         {canReschedule && (
-                            <button
-                                onClick={() => onUpdate && onUpdate('RESCHEDULE', appointment)}
-                                disabled={loading}
-                                title="Reschedule"
-                                style={{
-                                    width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #e2e8f0', cursor: 'pointer',
-                                    background: 'white', color: '#6366f1', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    transition: 'transform 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                            >
+                            <button onClick={() => onUpdate && onUpdate('RESCHEDULE', appointment)} disabled={loading} title="Reschedule" className="rounded-lg border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100">
                                 <RotateCw size={18} />
                             </button>
                         )}
-
                         {canCancel && (
-                            <button
-                                onClick={() => handleStatusChange('CANCELLED')}
-                                disabled={loading}
-                                title="Cancel"
-                                style={{
-                                    width: '42px', height: '42px', borderRadius: '50%', border: '1px solid #e2e8f0', cursor: 'pointer',
-                                    background: 'white', color: '#ef4444', boxShadow: '0 4px 6px -1px rgba(0,0,0,0.05)',
-                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    transition: 'transform 0.2s'
-                                }}
-                                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-2px)'}
-                                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
-                            >
+                            <button onClick={() => handleStatusChange('CANCELLED')} disabled={loading} title="Cancel" className="rounded-lg border border-red-200 bg-white p-2 text-red-600 hover:bg-red-50">
                                 <XCircle size={18} />
                             </button>
                         )}
@@ -244,25 +137,18 @@ const AppointmentCard = ({ appointment, onUpdate, variant = 'full' }) => {
                 )}
             </div>
 
-            {/* 4. Notes Section (Expandable) */}
             {reason_text && (
-                <div style={{ borderTop: '1px solid #f1f5f9' }}>
+                <div className="border-t border-slate-200">
                     <button
                         onClick={() => setNotesExpanded(!notesExpanded)}
-                        style={{
-                            width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                            padding: '12px 24px', background: 'transparent', border: 'none', cursor: 'pointer',
-                            fontSize: '0.75rem', fontWeight: '800', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em'
-                        }}
+                        className="flex w-full items-center justify-between bg-white px-6 py-3 text-xs font-semibold uppercase text-slate-500 hover:bg-slate-50"
                     >
                         <span>Notes</span>
                         {notesExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
                     </button>
                     {notesExpanded && (
-                        <div style={{ padding: '0 24px 20px', background: 'rgba(248, 250, 252, 0.5)' }}>
-                            <p style={{ fontSize: '0.9rem', color: '#475569', fontStyle: 'italic', lineHeight: '1.6', margin: 0 }}>
-                                {reason_text}
-                            </p>
+                        <div className="bg-slate-50 px-6 pb-5">
+                            <p className="m-0 text-sm leading-6 text-slate-600">{reason_text}</p>
                         </div>
                     )}
                 </div>

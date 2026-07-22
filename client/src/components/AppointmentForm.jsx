@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { format } from 'date-fns';
-import { Calendar, Clock, AlertTriangle, CheckCircle, Info, User, Tag, FileText, X } from 'lucide-react';
+import { AlertTriangle, Info, X } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
 
@@ -57,7 +57,6 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
             rescheduledFromId: initialData?.id || null,
             caseId: caseId || null
         };
-        console.log("Submitting Appointment Payload:", payload); // DEBUG
 
         try {
             await api.post('/appointments-v2', payload);
@@ -84,18 +83,18 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
     };
 
     return (
-        <div className="modal-content animate-fade-in" style={{ width: '100%', maxWidth: '800px', margin: '0 auto' }}>
-            <div className="flex justify-between items-center mb-6">
-                <h3 className="heading" style={{ fontSize: '1.25rem', marginBottom: 0 }}>
+        <div className="modal-content animate-fade-in">
+            <div className="mb-6 flex items-center justify-between gap-4">
+                <h3 className="m-0 text-xl font-semibold text-slate-900">
                     {getTitle()}
                 </h3>
-                <button onClick={onCancel} className="text-slate-400 hover:text-slate-600">
+                <button onClick={onCancel} className="rounded-lg p-1 text-slate-400 hover:bg-slate-100 hover:text-slate-600">
                     <X size={24} />
                 </button>
             </div>
 
             {error && (
-                <div className="mb-4 p-3 bg-red-50 text-red-600 rounded flex items-center gap-2 text-sm border border-red-100">
+                <div className="mb-4 flex items-center gap-2 rounded-lg border border-red-100 bg-red-50 p-3 text-sm text-red-600">
                     <AlertTriangle size={16} />
                     <span>{error}</span>
                 </div>
@@ -105,8 +104,8 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
 
                 {/* Patient ID (Doctor only, Standard view or if missing) */}
                 {user.role === 'DOCTOR' && !initialData && !caseId && (
-                    <div>
-                        <label className="text-xs text-muted mb-1 font-bold uppercase tracking-wider">Patient ID</label>
+                    <div className="rounded-xl border border-slate-200 bg-white p-4">
+                        <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-slate-500">Patient ID</label>
                         <input
                             className="input w-full"
                             placeholder="e.g. patient-123"
@@ -119,11 +118,13 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                 )}
 
                 {/* GROUP 1: WHEN */}
-                <div>
-                    <label className="text-xs text-muted mb-2 font-bold uppercase tracking-wider block">When</label>
-                    <div className="flex gap-4">
-                        <div style={{ flex: 2 }}>
-                            <label className="text-xs text-muted mb-1 block">Date</label>
+                <section className="border-t border-slate-100 pt-5">
+                    <div className="mb-3">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">When</div>
+                    </div>
+                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                        <div>
+                            <label className="mb-1 block text-xs text-slate-500">Date</label>
                             <input
                                 type="date"
                                 className="input w-full"
@@ -134,8 +135,8 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                                 required
                             />
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <label className="text-xs text-muted mb-1 block">Time</label>
+                        <div>
+                            <label className="mb-1 block text-xs text-slate-500">Time</label>
                             <input
                                 type="time"
                                 className="input w-full"
@@ -145,8 +146,8 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                                 required
                             />
                         </div>
-                        <div style={{ flex: 1 }}>
-                            <label className="text-xs text-muted mb-1 block">Duration</label>
+                        <div className="sm:col-span-2">
+                            <label className="mb-1 block text-xs text-slate-500">Duration</label>
                             <select
                                 className="input w-full"
                                 value={duration}
@@ -159,35 +160,33 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                             </select>
                         </div>
                     </div>
-                </div>
+                </section>
 
                 {/* GROUP 2: HOW */}
-                <div>
-                    <label className="text-xs text-muted mb-2 font-bold uppercase tracking-wider block">How</label>
-                    <div className="flex gap-4">
-                        <div style={{ flex: 1 }}>
-                            <label className="text-xs text-muted mb-1 block">Type</label>
-                            <select
-                                className="input w-full"
-                                value={type}
-                                onChange={e => setType(e.target.value)}
-                                disabled={loading}
-                            >
-                                <option value="IN_PERSON">In-Person Visit</option>
-                                <option value="VIDEO">Video Consultation</option>
-                                <option value="AUDIO">Phone Call</option>
-                            </select>
-                        </div>
-                        {/* Spacer for alignment if needed, or just let it expand */}
-                        <div style={{ flex: 2 }}></div>
+                <section className="border-t border-slate-100 pt-5">
+                    <div className="mb-3">
+                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">How</div>
                     </div>
-                </div>
+                    <label className="mb-1 block text-xs text-slate-500">Type</label>
+                    <select
+                        className="input w-full"
+                        value={type}
+                        onChange={e => setType(e.target.value)}
+                        disabled={loading}
+                    >
+                        <option value="IN_PERSON">In-Person Visit</option>
+                        <option value="VIDEO">Video Consultation</option>
+                        <option value="AUDIO">Phone Call</option>
+                    </select>
+                </section>
 
                 {/* GROUP 3: WHY */}
-                <div>
-                    <label className="text-xs text-muted mb-2 font-bold uppercase tracking-wider block">Why</label>
+                <section className="border-t border-slate-100 pt-5">
                     <div className="mb-3">
-                        <label className="text-xs text-muted mb-1 block">Reason</label>
+                        <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">Why</div>
+                    </div>
+                    <div className="mb-3">
+                        <label className="mb-2 block text-xs text-slate-500">Reason</label>
                         <div className="flex flex-wrap gap-2">
                             {REASON_TAGS.map(tag => (
                                 <button
@@ -196,12 +195,6 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                                     onClick={() => setSelectedReason(tag)}
                                     disabled={loading}
                                     className={`badge ${selectedReason === tag ? 'badge-primary' : ''}`}
-                                    style={{
-                                        cursor: 'pointer',
-                                        border: '1px solid #e2e8f0',
-                                        padding: '0.5em 1em',
-                                        fontSize: '0.85rem'
-                                    }}
                                 >
                                     {tag}
                                 </button>
@@ -216,18 +209,18 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                         placeholder="Notes (Optional)"
                         disabled={loading}
                     />
-                </div>
+                </section>
 
-                <div className="bg-blue-50/50 p-2 rounded text-xs text-slate-500 flex gap-2 border border-blue-50">
-                    <Info size={14} className="text-primary shrink-0" />
+                <div className="flex gap-2 rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs text-slate-500">
+                    <Info size={14} className="shrink-0 text-slate-500" />
                     <span>Appointment will be <strong>REQUESTED</strong> until confirmed.</span>
                 </div>
 
                 {/* Actions */}
-                <div className="flex gap-3 mt-2 pt-4 border-t border-slate-100">
+                <div className="mt-2 flex flex-col gap-3 border-t border-slate-100 pt-4 sm:flex-row">
                     <button
                         type="submit"
-                        className="btn w-full justify-center"
+                        className="btn w-full justify-center sm:flex-1"
                         disabled={loading}
                     >
                         {getButtonLabel()}
@@ -235,7 +228,7 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
                     <button
                         type="button"
                         onClick={onCancel}
-                        className="btn btn-outline"
+                        className="btn btn-outline w-full sm:w-auto"
                         disabled={loading}
                     >
                         Cancel

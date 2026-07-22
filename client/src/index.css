@@ -28,6 +28,8 @@
 }
 
 :root {
+  --navbar-height: 64px;
+
   --primary: #059669;
   --primary-hover: #047857;
   --primary-light: #d1fae5;

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { format } from 'date-fns';
+import { addDays, format } from 'date-fns';
 import { AlertTriangle, Info, X } from 'lucide-react';
 import api from '../api';
 import { useAuth } from '../AuthContext';
@@ -15,8 +15,8 @@ const AppointmentForm = ({ targetId, onSuccess, onCancel, initialData = null, ca
     const { user } = useAuth();
 
     // Initial State
-    const [date, setDate] = useState((initialData && initialData.start_time) ? format(new Date(initialData.start_time), 'yyyy-MM-dd') : '');
-    const [time, setTime] = useState((initialData && initialData.start_time) ? format(new Date(initialData.start_time), 'HH:mm') : '');
+    const [date, setDate] = useState((initialData && initialData.start_time) ? format(new Date(initialData.start_time), 'yyyy-MM-dd') : format(addDays(new Date(), 1), 'yyyy-MM-dd'));
+    const [time, setTime] = useState((initialData && initialData.start_time) ? format(new Date(initialData.start_time), 'HH:mm') : '10:00');
     const [duration, setDuration] = useState(initialData?.duration_minutes || 30);
     const [type, setType] = useState(initialData?.type || 'IN_PERSON');
 
